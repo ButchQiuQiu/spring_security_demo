@@ -1,20 +1,22 @@
 package com.butch.spring_security_demo.bean;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 /**
- * @author butch
- * 用户bean,实现了UserDetails接口可以让springsecurity自动验证和鉴权
- * 实现UserDetails接口security可以获得权限和用户信息,用户也可以获取接口指定的各种信息.
+ * @author butch 用户bean,实现了UserDetails接口可以让springsecurity自动验证和鉴权
+ *         实现UserDetails接口security可以获得权限和用户信息,用户也可以获取接口指定的各种信息.
  */
 
-//注入spring
+// 注入spring
 @Component
-public class MyUserBean implements UserDetails{
+public class MyUserBean implements UserDetails {
     /**
      *
      */
@@ -36,44 +38,48 @@ public class MyUserBean implements UserDetails{
         this.roles = roles;
     }
 
-    //获取所有权限由接口定义
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
-		return null;
-	}
+    // 获取所有权限由接口定义
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        String[] authorities = roles.split(",");
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        for (String role : authorities) {
+            simpleGrantedAuthorities.add(new SimpleGrantedAuthority(role));
+        }
+        return simpleGrantedAuthorities;
+    }
 
-    //获取password由接口定义
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
+    // 获取password由接口定义
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
 
-    //获取用户名由接口定义
-	@Override
-	public String getUsername() {
-		return this.username;
-	}
+    // 获取用户名由接口定义
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return false;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() { 
-		return false;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return false;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return false;
-	}
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 
     public Long getId() {
         return id;
@@ -90,6 +96,7 @@ public class MyUserBean implements UserDetails{
     public void setName(String name) {
         this.name = name;
     }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -105,5 +112,5 @@ public class MyUserBean implements UserDetails{
     public void setRoles(String roles) {
         this.roles = roles;
     }
-    
+
 }
